@@ -4,7 +4,8 @@
 var expect = require('chai').expect,
 _          = require('underscore'),
 bluebird   = require('bluebird'),
-Email      = require('../../lib/email');
+Email      = require('../../lib/email'),
+config     = require('../../lib/config');
 
 describe('Check Email', function(){
 
@@ -78,6 +79,74 @@ describe('Check Email', function(){
 
     expect(email.subject).to.equal('Leave request is awaiting assignment');
     expect(email.body).to.contain('no direct manager or department manager');
+  });
+
+  it('renders an attendance correction request with its website link', async function(){
+    const email = await (new Email()).promise_rendered_email_template({
+      template_name: 'attendance_correction_request',
+      context: {
+        correction_type: 'Clock-out',
+        requester_name: 'Jane Employee',
+        approver_name: 'Alex Manager',
+        work_date: '01/09/2026',
+        original_time: '—',
+        requested_time: '17:30',
+        reason: 'Forgot to clock out',
+        requests_url: 'https://tttimeoff.onrender.com/attendance/clock-out-corrections/',
+      },
+    });
+
+    expect(email.subject).to.equal('New Clock-out correction request');
+    expect(email.body).to.contain('https://tttimeoff.onrender.com/attendance/clock-out-corrections/');
+  });
+
+  it('renders an attendance correction decision with its website link', async function(){
+    const email = await (new Email()).promise_rendered_email_template({
+      template_name: 'attendance_correction_decision',
+      context: {
+        correction_type: 'Clock-in',
+        requester_name: 'Jane Employee',
+        approver_name: 'Alex Manager',
+        work_date: '01/09/2026',
+        requested_time: '08:30',
+        decision: 'approved',
+        requests_url: 'https://tttimeoff.onrender.com/attendance/corrections/',
+      },
+    });
+
+    expect(email.subject).to.equal('Clock-in correction request approved');
+    expect(email.body).to.contain('https://tttimeoff.onrender.com/attendance/corrections/');
+  });
+
+  it('sends and records an attendance correction email using the configured domain', async function(){
+    let recordedEmail;
+    const recipient = {
+      email: 'manager@example.test',
+      reload_with_session_details: () => bluebird.resolve(),
+      record_email_addressed_to_me: email => {
+        recordedEmail = email;
+        return bluebird.resolve();
+      },
+    };
+    const email = new Email();
+    email.get_send_email = () => message => bluebird.resolve(message);
+
+    await email.promise_attendance_correction_email({
+      recipient,
+      template_name: 'attendance_correction_request',
+      path: '/attendance/corrections/',
+      context: {
+        correction_type: 'Clock-in',
+        requester_name: 'Jane Employee',
+        approver_name: 'Alex Manager',
+        work_date: '01/09/2026',
+        original_time: '09:00',
+        requested_time: '08:30',
+        reason: 'Forgot to clock in',
+      },
+    });
+
+    expect(recordedEmail.body).to.contain(`${String(config.get('application_domain')).replace(/\/+$/, '')}/attendance/corrections/`);
   });
 });
 
