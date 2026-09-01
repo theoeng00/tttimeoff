@@ -1,0 +1,10 @@
+A leave request was escalated to you
+=====
+
+<p>Hello {{next_approver.name}},</p>
+
+<p>{{requester.name}} {{requester.lastname}} escalated a leave request to you after it remained pending with {{previous_approver.name}} {{previous_approver.lastname}}.</p>
+
+<p>{{> leave_dates leave=leave }}</p>
+
+<p>{{> email/link href=requests_url text='Review this leave request' }}</p>

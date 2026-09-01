@@ -1,0 +1,71 @@
+
+<div class="row">
+  {{# unless leaves}}
+  <div class="col-md-12 text-muted">
+    {{__ "There are no leave requests yet."}}
+  </div>
+  {{else}}
+
+  <div class="col-md-12">
+    <p class="visible-xs-block"><em class="text-muted">{{__ "Scroll table horizontally"}}</em></p>
+    <div class="table-responsive">
+    <table class="table table-hover user-requests-table">
+      <thead>
+        <tr>
+          <th>{{__ "Leave dates"}}</th>
+          <th>{{__ "Type"}}</th>
+          <th>{{__ "Deducted"}}</th>
+          <th>{{__ "Approved by"}}</th>
+          <th></th>
+          <th class="col-xs-2">{{__ "Comment"}}</th>
+          <th><span class="pull-right">{{__ "Status"}}</span></th>
+        </tr>
+      </thead>
+
+      <tbody>
+      {{# each leaves }}
+
+      <tr class="leave-request-row">
+        <td data-tom-leave-dates="1">
+          <a class="leave-details-summary-trigger" data-leave-id="{{this.id}}" href="#">{{> leave_dates leave=this}}</a>
+        </td>
+        <td>{{ this.leave_type.name }}{{#if this.is_pended_revoke_leave}}<br>(pended revoke){{/if}}</td>
+        <td>{{ this.get_deducted_days_number }}</td>
+        <td class="user-request-table-approver">{{#with this.approver}}{{this.full_name}}{{/with}}</td>
+        <td>
+          {{# if this.is_approved_leave }}
+          {{# unless this.is_pended_revoke_leave}}
+          <form method="post" action="/requests/revoke/">
+            <input type="hidden" value="{{this.id}}" name="request">
+            <button type="submit" class="pull-right btn btn-default btn-xs revoke-btn single-click" title="Revoke leave request. Subject of approval."><i class="fa fa-trash"></i> {{__ "Revoke"}}</button>
+          </form>
+          {{/unless}}
+          {{else}}
+            {{#if_equal this.userId ../logged_user.id }}
+            {{#if this.can_escalate}}
+            <form method="post" action="/requests/escalate/" class="pull-right">
+              <input type="hidden" value="{{this.id}}" name="request">
+              <button type="submit" class="btn btn-primary btn-xs single-click" title="Send this request to the next manager">
+                <i class="fa fa-level-up"></i> Escalate to {{this.next_approver.name}}
+              </button>
+            </form>
+            {{/if}}
+            <form method="post" action='/requests/cancel/'>
+              <input type="hidden" value="{{this.id}}" name="request">
+              <button type="submit" class="pull-right btn btn-default btn-xs revoke-btn single-click" title="Cancel leave request" value="cancel"><i class="fa fa-trash"></i> {{__ "Cancel"}}</button>
+            </form>
+            {{/if_equal}}
+          {{/if}}
+        </td>
+        <td>{{this.comment.comment}}</td>
+        <td><span class="pull-right leave-request-row-status">{{#if this.is_new_leave }}{{__ "Pending"}}{{else}}{{#if this.is_approved_leave}}{{__ "Approved"}}{{else}}{{__ "Rejected"}}{{/if}}{{/if}}</span></td>
+      </tr>
+
+      {{/ each }}
+
+      </tbody>
+    </table>
+    </div>
+  </div>
+  {{/unless}}
+</div>

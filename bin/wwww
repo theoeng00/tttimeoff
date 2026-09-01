@@ -1,0 +1,24 @@
+#!/usr/bin/env node
+
+var debug = require('debug')('vacation-tracker');
+var path = require('path');
+var applyPendingRestore = require('../lib/util/database_restore').applyPendingRestore;
+
+applyPendingRestore({projectRoot: path.resolve(__dirname, '..')})
+.then(function(result) {
+  if (result) console.log('Database restore applied. Rollback: ' + result.rollbackPath);
+
+  var app = require('../app');
+  app.set('port', process.env.PORT || 3000);
+
+  return app.get('db_model').sequelize.sync().then(function () {
+    var server = app.listen(app.get('port'), function() {
+      debug('Express server listening on port ' + server.address().port);
+      require('../lib/model/start_leave_escalation_scheduler')(app.get('db_model'));
+    });
+  });
+})
+.catch(function(error) {
+  console.error('Failed to start: ' + error.stack);
+  process.exitCode = 1;
+});

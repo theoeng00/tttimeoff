@@ -1,0 +1,57 @@
+{{> header}}
+
+<h1>{{__ "Attendance"}}</h1>
+{{> show_flash_messages}}
+
+{{#if isSystemAdmin}}<div class="alert alert-info">{{__ "System administrators are not included in employee attendance"}}</div>{{/if}}
+
+{{#unless company.attendance_enabled}}
+  <div class="alert alert-warning">{{__ "Attendance is not enabled"}}{{#if logged_user.admin}} — <a href="/attendance/settings/">{{__ "Configure attendance"}}</a>{{/if}}</div>
+{{else}}
+  <div class="attendance-card text-center">
+    <p class="lead">{{company.attendance_location_name}}</p>
+    {{#unless isWorkingDay}}
+      <div class="alert alert-info">{{__ "Today is not a working day"}}</div>
+    {{/unless}}
+
+    {{#if canClockIn}}
+      <form method="post" action="/attendance/clock-in/" class="{{#unless verificationIsNetwork}}js-gps-attendance-form{{/unless}}">
+        <input type="hidden" name="latitude"><input type="hidden" name="longitude"><input type="hidden" name="accuracy">
+        <button type="submit" class="btn btn-danger attendance-button"><span class="fa fa-map-marker" aria-hidden="true"></span> {{__ "Clock in"}}</button>
+      </form>
+    {{/if}}
+
+    {{#if attendance}}
+      <p class="attendance-time"><strong>{{__ "Clock-in time"}}:</strong> {{clockInTime}}</p>
+      {{#if attendance.minutes_late}}<p class="text-danger">{{__ "Late"}} {{attendance.minutes_late}} {{__ "minutes"}}</p>{{/if}}
+    {{/if}}
+
+    {{#if waitingForClockOut}}
+      <p id="clock-out-wait" class="help-block" data-available-at="{{clockOutAvailableAt}}">{{__ "Clock out is available at"}} {{company.attendance_end_time}}</p>
+      <form method="post" action="/attendance/clock-out/" class="{{#unless verificationIsNetwork}}js-gps-attendance-form{{/unless}} hidden" id="clock-out-form">
+        <input type="hidden" name="latitude"><input type="hidden" name="longitude"><input type="hidden" name="accuracy">
+        <button type="submit" class="btn btn-danger attendance-button"><span class="fa fa-sign-out" aria-hidden="true"></span> {{__ "Clock out"}}</button>
+      </form>
+    {{/if}}
+
+    {{#if canClockOut}}
+      <form method="post" action="/attendance/clock-out/" class="{{#unless verificationIsNetwork}}js-gps-attendance-form{{/unless}}">
+        <input type="hidden" name="latitude"><input type="hidden" name="longitude"><input type="hidden" name="accuracy">
+        <button type="submit" class="btn btn-danger attendance-button"><span class="fa fa-sign-out" aria-hidden="true"></span> {{__ "Clock out"}}</button>
+      </form>
+    {{/if}}
+
+    {{#if clockOutTime}}
+      <p class="attendance-time"><strong>{{__ "Clock-out time"}}:</strong> {{clockOutTime}}</p>
+      {{#if attendance.overtime_minutes}}<p class="text-success"><strong>OT:</strong> {{attendance.overtime_minutes}} {{__ "minutes"}}</p>{{/if}}
+    {{/if}}
+    <p id="gps-status" class="help-block" role="status" aria-live="polite">{{#if verificationIsNetwork}}{{__ "Attendance requires the office Wi-Fi"}}{{else}}{{__ "GPS is used only when you press the button"}}{{/if}}</p>
+  </div>
+{{/unless}}
+
+<p class="text-center"><a class="btn btn-primary" href="/attendance/overtime/"><span class="fa fa-hourglass-half" aria-hidden="true"></span> {{__ "Retrospective OT requests"}}</a></p>
+
+{{#if canViewAttendanceReports}}<p class="text-center"><a class="btn btn-default" href="/attendance/report/">{{__ "Attendance report"}}</a></p>{{/if}}
+{{#if logged_user.admin}}<p class="text-center"><a class="btn btn-default" href="/attendance/settings/">{{__ "Attendance settings"}}</a></p>{{/if}}
+
+{{> footer}}

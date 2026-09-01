@@ -1,0 +1,38 @@
+#!/usr/bin/env node
+
+var debug = require('debug')('vacation-tracker');
+var cluster = require('cluster');
+var path = require('path');
+var applyPendingRestore = require('../lib/util/database_restore').applyPendingRestore;
+
+if (cluster.isMaster ) {
+
+  cluster.on('exit', function(worker, code){
+    if(code != 0 && !worker.suicide) {
+      console.log('>>>>>> Worker crashed. Starting a new worker');
+      cluster.fork();
+    }
+  });
+
+  applyPendingRestore({projectRoot: path.resolve(__dirname, '..')})
+  .then(function(result) {
+    if (result) console.log('Database restore applied. Rollback: ' + result.rollbackPath);
+    [1,2].forEach(function(){cluster.fork()});
+  })
+  .catch(function(error) {
+    console.error('Failed to start: ' + error.stack);
+    process.exitCode = 1;
+  });
+
+} else {
+  var app = require('../app');
+  app.set('port', process.env.PORT || 3000);
+
+  app.get('db_model').sequelize.sync().then(function () {
+    var server = app.listen(app.get('port'), function() {
+      console.log('Started to listen on port ' + server.address().port);
+      require('../lib/model/start_leave_escalation_scheduler')(app.get('db_model'));
+    });
+  });
+
+}

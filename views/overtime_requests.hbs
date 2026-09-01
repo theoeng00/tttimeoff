@@ -1,0 +1,61 @@
+{{> header}}
+
+<h1>{{__ "Retrospective OT requests"}}</h1>
+{{> show_flash_messages}}
+
+{{#unless isSystemAdmin}}
+<div class="panel panel-default">
+  <div class="panel-heading"><strong>{{__ "Submit retrospective OT"}}</strong></div>
+  <div class="panel-body">
+    <form method="post" action="/attendance/overtime/" class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="ot-date-start">{{__ "From"}}</label>
+        <div class="col-sm-4"><input class="form-control" id="ot-date-start" name="date_start" type="text" value="{{todayDisplay}}" placeholder="DD/MM/YYYY" pattern="\d{1,2}/\d{1,2}/\d{4}" inputmode="numeric" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="1" data-date-week-start="1" data-date-end-date="{{todayDisplay}}" required></div>
+        <label class="col-sm-2 control-label" for="ot-date-end">{{__ "To"}}</label>
+        <div class="col-sm-4"><input class="form-control" id="ot-date-end" name="date_end" type="text" value="{{todayDisplay}}" placeholder="DD/MM/YYYY" pattern="\d{1,2}/\d{1,2}/\d{4}" inputmode="numeric" data-provide="datepicker" data-date-format="dd/mm/yyyy" data-date-autoclose="1" data-date-week-start="1" data-date-end-date="{{todayDisplay}}" required></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="ot-time-start">{{__ "OT start time"}}</label>
+        <div class="col-sm-4"><input class="form-control" id="ot-time-start" name="overtime_start_time" type="text" placeholder="ไม่มีก็เว้นว่าง" pattern="(?:[01]?\d|2[0-3])[\.:][0-5]\d" inputmode="decimal" maxlength="5"></div>
+        <label class="col-sm-2 control-label" for="ot-time-end">{{__ "OT end time"}}</label>
+        <div class="col-sm-4"><input class="form-control" id="ot-time-end" name="overtime_end_time" type="text" placeholder="ไม่มีก็เว้นว่าง" pattern="(?:[01]?\d|2[0-3])[\.:][0-5]\d" inputmode="decimal" maxlength="5"></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{__ "Calculated OT"}}</label>
+        <div class="col-sm-4"><p class="form-control-static" id="calculated-ot-minutes" data-work-start="{{workStartTime}}" data-work-end="{{workEndTime}}" data-holiday-dates="{{holidayDates}}"><strong data-rate="1">0</strong> {{__ "minutes at 1x"}} · <strong data-rate="1.5">0</strong> {{__ "minutes at 1.5x"}} · <strong data-rate="3">0</strong> {{__ "minutes at 3x"}} <span class="help-block">{{__ "OT rates are selected automatically from weekends and company holidays"}} ({{workStartTime}}–{{workEndTime}})</span></p></div>
+        <label class="col-sm-2 control-label" for="overnight-nights">{{__ "Overnight nights"}}</label>
+        <div class="col-sm-4"><input class="form-control" id="overnight-nights" name="overnight_nights" type="number" min="0" max="31" value="0" required></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="ot-reason">{{__ "Reason"}}</label>
+        <div class="col-sm-10"><textarea class="form-control" id="ot-reason" name="reason" maxlength="1000" required></textarea></div>
+      </div>
+      <button class="btn btn-success pull-right single-click" type="submit">{{__ "Submit for approval"}}</button>
+    </form>
+  </div>
+</div>
+{{/unless}}
+
+<div class="alert alert-info"><strong>{{__ "Approved totals"}}:</strong> {{approvedMinutes}} {{__ "minutes"}} — 1x {{approvedRate1Minutes}}, 1.5x {{approvedRate15Minutes}}, 3x {{approvedRate3Minutes}} {{__ "minutes"}} + {{approvedNights}} {{__ "Overnight nights"}}</div>
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>{{__ "Employee"}}</th><th>{{__ "From"}}</th><th>{{__ "To"}}</th><th>{{__ "OT period"}}</th><th>{{__ "OT minutes"}}</th><th>1x</th><th>1.5x</th><th>3x</th><th>{{__ "Overnight nights"}}</th><th>{{__ "Reason"}}</th><th>{{__ "Status"}}</th><th>{{__ "Approver"}}</th><th>{{__ "Actions"}}</th></tr></thead>
+    <tbody>
+      {{#each requests}}
+      <tr>
+        <td>{{user.name}} {{user.lastname}}</td><td>{{as_date_formatted date_start "DD/MM/YYYY"}}</td><td>{{as_date_formatted date_end "DD/MM/YYYY"}}</td><td>{{#if overtime_start_time}}{{overtime_start_time}}–{{overtime_end_time}}{{else}}—{{/if}}</td><td>{{overtime_minutes}}</td><td>{{rate_1_minutes}}</td><td>{{rate_1_5_minutes}}</td><td>{{rate_3_minutes}}</td><td>{{overnight_nights}}</td><td>{{reason}}</td><td>{{statusLabel}}</td><td>{{approver.name}} {{approver.lastname}}</td>
+        <td>
+          {{#if canDecide}}<form method="post" action="/attendance/overtime/{{id}}/approve/" class="form-inline" style="display:inline"><button class="btn btn-xs btn-success" type="submit">{{#if isCancellationPending}}{{__ "Approve cancellation"}}{{else}}{{__ "Approve"}}{{/if}}</button></form> <form method="post" action="/attendance/overtime/{{id}}/reject/" class="form-inline" style="display:inline"><button class="btn btn-xs btn-danger" type="submit">{{#if isCancellationPending}}{{__ "Reject cancellation"}}{{else}}{{__ "Reject"}}{{/if}}</button></form>{{/if}}
+          {{#if canCancel}}<form method="post" action="/attendance/overtime/{{id}}/cancel/" class="form-inline" style="display:inline"><button class="btn btn-xs btn-warning" type="submit">{{#if_equal status "approved"}}{{__ "Request cancellation"}}{{else}}{{__ "Cancel request"}}{{/if_equal}}</button></form>{{/if}}
+        </td>
+      </tr>
+      {{else}}
+      <tr><td colspan="13" class="text-center text-muted">{{__ "No OT requests"}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<p><a class="btn btn-default" href="/attendance/">{{__ "Back"}}</a></p>
+{{> footer}}

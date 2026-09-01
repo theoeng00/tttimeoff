@@ -1,0 +1,10 @@
+Your leave request can now be escalated
+=====
+
+<p>Hello {{requester.name}},</p>
+
+<p>Your leave request has been waiting for {{approver.name}} {{approver.lastname}} for at least 24 hours.</p>
+
+<p>You can now send it to {{next_approver.name}} {{next_approver.lastname}}, the next manager in your reporting line.</p>
+
+<p>{{> email/link href=requests_url text='Review and escalate this request' }}</p>

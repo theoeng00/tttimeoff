@@ -1,0 +1,11 @@
+Leave request is awaiting assignment
+=====
+<p>Hello <strong>{{#with requester}}{{this.full_name}}{{/with}},</strong></p>
+
+<p>Your leave request was recorded, but no direct manager or department manager is configured.</p>
+
+<p>A company administrator can review the unassigned request from the pending requests page.</p>
+
+{{> email/leave_comments comments=comments }}
+
+<p>Thanks</p>

@@ -1,0 +1,32 @@
+{{> header }}
+
+<h1>{{__ "Confirm database restore"}}</h1>
+
+<div class="alert alert-warning" role="alert">
+  <strong>{{__ "The backup passed its integrity and schema checks."}}</strong>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>{{__ "Backup file"}}</dt><dd>{{filename}}</dd>
+  <dt>{{__ "Companies"}}</dt><dd>{{summary.companies}}</dd>
+  <dt>{{__ "Employees"}}</dt><dd>{{summary.users}}</dd>
+  <dt>{{__ "Leave records"}}</dt><dd>{{summary.leaves}}</dd>
+</dl>
+
+<p class="text-danger"><strong>{{__ "Restoring removes all changes made after the selected backup."}}</strong></p>
+
+<form method="POST" action="/restore/confirm/">
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" name="confirm_restore" value="yes" required>
+      {{__ "I understand and want to restore this database"}}
+    </label>
+  </div>
+  <button type="submit" class="btn btn-danger single-click">
+    <span class="fa fa-history"></span> {{__ "Queue restore"}}
+  </button>
+</form>
+
+<form method="POST" action="/restore/cancel/" class="form-inline" style="margin-top: 10px;">
+  <button type="submit" class="btn btn-default">{{__ "Cancel"}}</button>
+</form>

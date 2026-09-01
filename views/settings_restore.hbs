@@ -1,0 +1,37 @@
+{{> header }}
+
+<h1>{{__ "Restore database"}}</h1>
+
+{{> show_flash_messages }}
+
+{{#if restore_pending}}
+  <div class="alert alert-warning" role="alert">
+    <strong>{{__ "A database restore is waiting for restart."}}</strong>
+    {{__ "Restart the server to apply it before uploading another backup."}}
+  </div>
+{{else}}
+  <div class="row">
+    <div class="col-md-8">
+      <div class="panel panel-danger">
+        <div class="panel-heading">{{__ "Restore from Google Drive backup"}}</div>
+        <div class="panel-body">
+          <p id="restore-warning" class="text-danger">
+            <strong>{{__ "Warning:"}}</strong>
+            {{__ "Restoring removes all changes made after the selected backup."}}
+          </p>
+          <p>{{__ "Download a .sqlite.gz backup from Google Drive, then select it below."}}</p>
+
+          <form method="POST" action="/restore/upload/" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="restore_backup">{{__ "Backup file"}}</label>
+              <input id="restore_backup" name="restore_backup" type="file" accept=".gz,.sqlite.gz" required aria-describedby="restore-warning">
+            </div>
+            <button type="submit" class="btn btn-warning single-click">
+              <span class="fa fa-check-circle"></span> {{__ "Upload and verify"}}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{{/if}}

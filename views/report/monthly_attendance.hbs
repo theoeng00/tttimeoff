@@ -1,0 +1,21 @@
+{{> header }}
+
+<h1>สรุปขาด ลา มาสาย และ OT รายเดือน</h1>
+
+<ol class="breadcrumb"><li><a href="/reports/">รายงานทั้งหมด</a></li><li class="active">สรุปรายเดือน</li></ol>
+
+<form method="get" class="form-inline well">
+  <div class="form-group"><label for="month">เดือนเริ่มรอบ</label> <input class="form-control" id="month" name="month" type="month" value="{{monthValue}}"></div>
+  <button class="btn btn-default" type="submit" name="as-csv" value="1"><i class="fa fa-download"></i> Export CSV</button>
+  <button class="btn btn-success" type="submit">แสดงรายงาน</button>
+</form>
+
+<h3>รอบ {{periodLabel}}</h3>
+<p class="text-muted">รอบรายงานนับวันที่ 21 ถึงวันที่ 20 ของเดือนถัดไป วันลานับเฉพาะวันทำงาน และ OT นับเฉพาะคำขอที่อนุมัติแล้ว · ปีสิทธิ์ลา: {{leaveYearLabel}}</p>
+<div class="table-responsive"><table class="table table-striped table-bordered">
+  <thead><tr><th>พนักงาน</th><th>วันลงเวลา</th><th>มาสาย (นาที)</th><th>ขาด (วัน)</th><th>ลา (วัน)</th><th>OT รวม (นาที)</th><th>OT 1x</th><th>OT 1.5x</th><th>OT 3x</th><th>เหมา (คืน)</th><th>ประเภทลา</th><th>ลาในรอบนี้ (วัน)</th><th>ใช้แล้วทั้งปี (วัน)</th><th>คงเหลือทั้งปี (วัน)</th></tr></thead>
+  <tbody>{{#each rows}}{{#each leaveSummary}}<tr>{{#if @first}}<td>{{../user.name}} {{../user.lastname}}</td><td>{{../attendanceDays}}</td><td>{{../lateMinutes}}</td><td>{{../absentDays}}</td><td>{{../leaveDays}}</td><td>{{../overtimeMinutes}}</td><td>{{../overtimeRate1Minutes}}</td><td>{{../overtimeRate15Minutes}}</td><td>{{../overtimeRate3Minutes}}</td><td>{{../overnightNights}}</td>{{else}}<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>{{/if}}<td>{{name}}</td><td>{{periodDays}}</td><td>{{yearDays}}</td><td>{{#if hasLimit}}{{remainingDays}}{{else}}ไม่กำหนดโควตา{{/if}}</td></tr>{{/each}}<tr class="active"><td colspan="14">&nbsp;</td></tr>{{/each}}</tbody>
+  <tfoot><tr class="active"><th>รวม</th><th>{{totals.attendanceDays}}</th><th>{{totals.lateMinutes}}</th><th>{{totals.absentDays}}</th><th>{{totals.leaveDays}}</th><th>{{totals.overtimeMinutes}}</th><th>{{totals.overtimeRate1Minutes}}</th><th>{{totals.overtimeRate15Minutes}}</th><th>{{totals.overtimeRate3Minutes}}</th><th>{{totals.overnightNights}}</th><th colspan="4"></th></tr></tfoot>
+</table></div>
+
+{{> footer }}

@@ -1,0 +1,21 @@
+{{> header }}
+
+<h1>{{__ "Backup"}}</h1>
+
+{{> show_flash_messages }}
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">{{__ "Google Drive backup"}}</div>
+      <div class="panel-body">
+        <p id="backup-description">{{__ "A compressed database backup is uploaded to Google Drive. PostgreSQL uses .sql.gz and SQLite uses .sqlite.gz."}}</p>
+        <form method="POST" action="/backup/">
+          <button type="submit" class="btn btn-primary" aria-describedby="backup-description">
+            <span class="fa fa-cloud-upload"></span> {{__ "Back up now"}}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

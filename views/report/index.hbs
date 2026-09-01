@@ -1,0 +1,42 @@
+
+{{> header }}
+
+<h1>{{__ "Reports"}}</h1>
+
+<div class="row">
+  <div class="col-md-6 lead">{{__ "List of available reports"}}</div>
+</div>
+
+{{> show_flash_messages }}
+
+<div class="row">&nbsp;</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="well well-lg text-center">
+      <a class="btn btn-link btn-lg" href="/reports/allowancebytime/">Allowance usage by time <i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
+    <div class="col-md-4">
+    <div class="well well-lg text-center">
+      <a class="btn btn-link btn-lg" href="/reports/leaves/">Employees leaves <i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="well well-lg text-center">
+      <a class="btn btn-link btn-lg" href="/attendance/report/">{{__ "Attendance report"}} <i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="well well-lg text-center">
+      <a class="btn btn-link btn-lg" href="/attendance/overtime/">{{__ "OT report"}} <i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="well well-lg text-center">
+      <a class="btn btn-link btn-lg" href="/reports/monthly-attendance/">สรุปขาด ลา มาสาย และ OT รายเดือน <i class="fa fa-chevron-right"></i></a>
+    </div>
+  </div>
+</div>
+
+{{> footer }}

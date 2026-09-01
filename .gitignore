@@ -1,0 +1,9 @@
+
+*.swp
+*.swo
+*.swn
+*.swm
+node_modules/
+*.sqlite
+config/app.local.json
+config/crypto.local.json

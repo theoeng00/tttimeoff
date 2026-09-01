@@ -1,0 +1,142 @@
+
+<form method="POST" action="/users/edit/{{employee.id}}/">
+
+<div class="col-md-7">
+
+  {{> user_details/breadcrumb employee=employee }}
+
+  <div class="form-group">
+    <label for="name_inp" class="control-label">{{__ "First Name"}}</label>
+    <input class="form-control" id="name_inp" name="name" required value="{{employee.name}}">
+  </div>
+
+  <div class="form-group">
+    <label for="lastname_inp" class="control-label">{{__ "Last Name"}}</label>
+    <input class="form-control" id="lastname_inp" name="lastname" required value="{{employee.lastname}}">
+  </div>
+
+  <div class="form-group">
+    <label for="email_inp" class="control-label">{{__ "Email Address"}}</label>
+    <input class="form-control" id="email_inp" type="email" name="email_address" required value="{{employee.email}}" aria-describedby="email_help">
+    <span id="email_help" class="help-block">{{__ "Email address used by this user"}}</span>
+  </div>
+
+  <div class="form-group">
+    <label for="select_inp" class="control-label">{{__ "Primary department"}}</label>
+    <select class="form-control" id="select_inp" name="department" aria-describedby="department_help">
+      {{#each departments}}
+          <option value="{{this.id}}" {{#if_equal ../employee.DepartmentId this.id}} selected="selected"{{/if_equal}}>{{this.name}}{{#if this.boss}} ({{__ "Department manager"}}: {{this.boss.name}} {{this.boss.lastname}}){{/if}}</option>
+      {{/each}}
+    </select>
+    <span id="department_help" class="help-block">{{__ "Primary department help"}}</span>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">{{__ "Department memberships and approval lines"}}</label>
+    <div class="table-responsive">
+      <table class="table table-condensed">
+        <thead>
+          <tr><th>{{__ "Member"}}</th><th>{{__ "Department"}}</th><th>{{__ "Direct manager"}}</th></tr>
+        </thead>
+        <tbody>
+          {{#each departments}}
+          <tr>
+            <td><input type="checkbox" name="department_ids" value="{{this.id}}" {{#if this.is_member}}checked="checked"{{/if}} aria-label="Member of {{this.name}}"></td>
+            <td>{{this.name}}</td>
+            <td>
+              <select class="form-control input-sm" name="manager_{{this.id}}" aria-label="Manager in {{this.name}}">
+                <option value="">{{__ "None (top level)"}}</option>
+                {{#each this.manager_options}}
+                <option value="{{this.id}}" {{#if this.selected}}selected="selected"{{/if}}>{{this.name}} {{this.lastname}}</option>
+                {{/each}}
+              </select>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <span class="help-block">{{__ "Department membership help"}}</span>
+  </div>
+
+  <div class="form-group">
+      <label for="admin_inp" class="control-label">
+        <input class="" id="admin_inp" name="admin" type="checkbox" {{# if employee.admin}} checked="checked"  {{/if}} >
+        {{__ "Is administrator user"}}
+      </label>
+  </div>
+
+  <div class="form-group">
+      <label for="auto_approve_inp" class="control-label">
+        <input class="" id="auto_approve_inp" name="auto_approve" type="checkbox" {{# if employee.auto_approve}} checked="checked"  {{/if}} >
+        {{__ "Auto approve leave requests"}}
+      </label>
+      <span class="help-block">{{__ "Auto approve help"}}</span>
+  </div>
+
+  <div class="form-group">
+      <label for="receive_approval_report_inp" class="control-label">
+        <input id="receive_approval_report_inp" name="receive_approval_report" type="checkbox" {{#if employee.receive_approval_report}} checked="checked" {{/if}}>
+        {{__ "Receive CSV report when leave is approved"}}
+      </label>
+      <span class="help-block">{{__ "Approval report cutoff help"}}</span>
+  </div>
+
+  <div class="form-group">
+      <label for="can_view_attendance_reports_inp" class="control-label">
+        <input id="can_view_attendance_reports_inp" name="can_view_attendance_reports" type="checkbox" {{#if employee.can_view_attendance_reports}} checked="checked" {{/if}}>
+        {{__ "Can view company reports"}}
+      </label>
+      <span class="help-block">{{__ "Company report permission help"}}</span>
+  </div>
+
+  <div class="form-group">
+    <label for="start_date_inp" class="control-label">{{__ "Started on"}}</label>
+    <div class="input-group col-md-4">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <input class="form-control" id="start_date_inp" type="text" name="start_date" required data-date-autoclose="1" data-provide="datepicker" data-date-format="{{#with logged_user.company }}{{this.get_default_date_format_for_date_picker}}{{/with}}" data-date-week-start="1" value="{{as_date employee.start_date}}" aria-describedby="start_date_help">
+    </div>
+    <span id="start_date_help" class="help-block">{{__ "Employment start date help"}}</span>
+  </div>
+
+  <div class="form-group">
+    <label for="end_date_inp" class="control-label">{{__ "Ended on"}}</label>
+    <div class="input-group col-md-4">
+      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <input class="form-control" id="end_date_inp" type="text" name="end_date" data-date-autoclose="1" data-provide="datepicker" data-date-format="{{#with logged_user.company }}{{this.get_default_date_format_for_date_picker}}{{/with}}" data-date-week-start="1" value="{{as_date employee.end_date}}" aria-describedby="end_date_help">
+    </div>
+    <span id="end_date_help" class="help-block">{{__ "Employment end date help"}}</span>
+  </div>
+
+  <div class="form-group">
+    <label for="password_inp" class="control-label">{{__ "Password"}}</label>
+    <input class="form-control" id="password_inp" type="password" name="password_one" value="" {{#if company.ldap_auth_enabled}} readonly {{/if}} aria-describedby="password_inp_help">
+    <span id="password_inp_help" class="help-block">
+      {{# if company.ldap_auth_enabled }}
+        {{__ "LDAP password help"}}
+      {{else}}
+        {{__ "Password update help"}}
+      {{/ if}}
+    </span>
+  </div>
+
+  <div class="form-group">
+    <label for="password_inp" class="control-label">{{__ "Confirm password"}}</label>
+    <input class="form-control" id="confirm_password_inp" type="password" name="password_confirm" value="" {{# if company.ldap_auth_enabled}}readonly{{/if}}>
+  </div>
+
+  <div class="form-group">
+    <label for="link_to_email_audit" class="control-label">
+      <a href="/audit/email/?user_id={{employee.id}}">{{__ "View email history"}}: {{#with employee}}{{this.full_name}}{{/with}}</a>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <button id="save_changes_btn" type="submit" class="btn btn-success pull-right single-click">{{__ "Save changes"}}</button>
+    <a class="btn btn-link pull-right" href="/users/">{{__ "Cancel"}}</a>
+  </div>
+</div>
+
+</form>

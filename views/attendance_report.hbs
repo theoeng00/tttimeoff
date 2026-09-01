@@ -1,0 +1,7 @@
+{{> header}}
+<h1>{{__ "Attendance report"}}</h1>
+<form method="get" class="form-inline"><label for="report-date">{{__ "Date"}}</label> <input class="form-control" id="report-date" type="date" name="date" value="{{requestedDate}}"> <button class="btn btn-default" type="submit">{{__ "View"}}</button></form>
+<div class="table-responsive attendance-report"><table class="table table-striped"><thead><tr><th>{{__ "Employee"}}</th><th>{{__ "Status"}}</th><th>{{__ "Clock-in time"}}</th><th>{{__ "Clock-out time"}}</th><th>{{__ "Late (minutes)"}}</th><th>OT ({{__ "minutes"}})</th><th>{{__ "Verification method"}}</th></tr></thead><tbody>
+{{#each rows}}<tr><td>{{user.name}} {{user.lastname}}</td><td>{{statusLabel}}</td><td>{{clockInTime}}</td><td>{{clockOutTime}}</td><td>{{record.minutes_late}}</td><td>{{record.overtime_minutes}}</td><td>{{verificationLabel}}</td></tr>{{/each}}
+</tbody></table></div>
+{{> footer}}
