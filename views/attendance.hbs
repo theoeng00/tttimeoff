@@ -15,7 +15,7 @@
     {{/unless}}
 
     {{#if canClockIn}}
-      <form method="post" action="/attendance/clock-in/" class="{{#unless verificationIsNetwork}}js-gps-attendance-form{{/unless}}">
+      <form method="post" action="/attendance/clock-in/" class="js-gps-attendance-form">
         <input type="hidden" name="latitude"><input type="hidden" name="longitude"><input type="hidden" name="accuracy">
         <button type="submit" class="btn btn-danger attendance-button"><span class="fa fa-map-marker" aria-hidden="true"></span> {{__ "Clock in"}}</button>
       </form>
@@ -28,14 +28,14 @@
 
     {{#if waitingForClockOut}}
       <p id="clock-out-wait" class="help-block" data-available-at="{{clockOutAvailableAt}}">{{__ "Clock out is available at"}} {{company.attendance_end_time}}</p>
-      <form method="post" action="/attendance/clock-out/" class="{{#unless verificationIsNetwork}}js-gps-attendance-form{{/unless}} hidden" id="clock-out-form">
+      <form method="post" action="/attendance/clock-out/" class="js-gps-attendance-form hidden" id="clock-out-form">
         <input type="hidden" name="latitude"><input type="hidden" name="longitude"><input type="hidden" name="accuracy">
         <button type="submit" class="btn btn-danger attendance-button"><span class="fa fa-sign-out" aria-hidden="true"></span> {{__ "Clock out"}}</button>
       </form>
     {{/if}}
 
     {{#if canClockOut}}
-      <form method="post" action="/attendance/clock-out/" class="{{#unless verificationIsNetwork}}js-gps-attendance-form{{/unless}}">
+      <form method="post" action="/attendance/clock-out/" class="js-gps-attendance-form">
         <input type="hidden" name="latitude"><input type="hidden" name="longitude"><input type="hidden" name="accuracy">
         <button type="submit" class="btn btn-danger attendance-button"><span class="fa fa-sign-out" aria-hidden="true"></span> {{__ "Clock out"}}</button>
       </form>
@@ -45,7 +45,7 @@
       <p class="attendance-time"><strong>{{__ "Clock-out time"}}:</strong> {{clockOutTime}}</p>
       {{#if attendance.overtime_minutes}}<p class="text-success"><strong>OT:</strong> {{attendance.overtime_minutes}} {{__ "minutes"}}</p>{{/if}}
     {{/if}}
-    <p id="gps-status" class="help-block" role="status" aria-live="polite">{{#if verificationIsNetwork}}{{__ "Attendance requires the office Wi-Fi"}}{{else}}{{__ "GPS is used only when you press the button"}}{{/if}}</p>
+    <p id="gps-status" class="help-block" role="status" aria-live="polite">{{__ "GPS is used only when you press the button"}}</p>
   </div>
 {{/unless}}
 

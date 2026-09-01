@@ -52,14 +52,10 @@ describe('Attendance', () => {
     })).to.throw(/not configured/);
   });
 
-  it('accepts only addresses inside the configured office network', () => {
-    expect(attendance.isAddressInCidr('192.168.1.88', '192.168.1.0/24')).to.equal(true);
-    expect(attendance.isAddressInCidr('::ffff:192.168.1.88', '192.168.1.0/24')).to.equal(true);
-    expect(attendance.isAddressInCidr('192.168.2.10', '192.168.1.0/24')).to.equal(false);
-    expect(attendance.isAddressInCidr('26.59.248.223', '192.168.1.0/24')).to.equal(false);
-  });
-
-  it('rejects malformed network configuration instead of allowing everybody', () => {
-    expect(attendance.isAddressInCidr('192.168.1.88', 'bad-value')).to.equal(false);
+  it('always verifies attendance with GPS even for legacy office-network settings', () => {
+    const result = attendance.verifyAttendanceRequest(Object.assign({}, company, {
+      attendance_verification_mode: 'office_network',
+    }), {latitude: 13.7564, longitude: 100.5018, accuracy: 5});
+    expect(result.verification_mode).to.equal('gps');
   });
 });

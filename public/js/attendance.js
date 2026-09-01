@@ -1,12 +1,6 @@
 'use strict';
 
 $(function() {
-  $('#verification-mode').on('change', function() {
-    var useNetwork = this.value === 'office_network';
-    $('#network-verification-settings').toggleClass('hidden', !useNetwork);
-    $('#gps-verification-settings').toggleClass('hidden', useNetwork);
-  });
-
   $('#use-current-location').on('click', function() {
     var button = $(this);
     var status = $('#settings-gps-status');
