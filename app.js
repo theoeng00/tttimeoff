@@ -165,6 +165,8 @@ app.use(
 
 app.use('/attendance/', require('./lib/route/attendance'));
 
+app.use('/profile/', require('./lib/route/profile'));
+
 app.use(
   '/settings/',
   require('./lib/route/settings')

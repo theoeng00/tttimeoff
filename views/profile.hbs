@@ -1,0 +1,60 @@
+{{> header}}
+
+<h1>{{__ "My profile"}}</h1>
+{{> show_flash_messages}}
+
+<form method="post" action="/profile/" class="form-horizontal">
+  <input type="hidden" name="csrf_token" value="{{csrfToken}}">
+
+  <div class="form-group">
+    <label for="profile_name" class="col-sm-3 control-label">{{__ "First Name"}}</label>
+    <div class="col-sm-6">
+      <input id="profile_name" class="form-control" name="name" value="{{logged_user.name}}" maxlength="100" autocomplete="given-name" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="profile_lastname" class="col-sm-3 control-label">{{__ "Last Name"}}</label>
+    <div class="col-sm-6">
+      <input id="profile_lastname" class="form-control" name="lastname" value="{{logged_user.lastname}}" maxlength="100" autocomplete="family-name" required>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="profile_email" class="col-sm-3 control-label">{{__ "Email Address"}}</label>
+    <div class="col-sm-6">
+      <input id="profile_email" class="form-control" type="email" value="{{logged_user.email}}" readonly aria-describedby="profile_email_help">
+      <span id="profile_email_help" class="help-block">{{__ "Contact an administrator to change your email address"}}</span>
+    </div>
+  </div>
+
+  {{#if ldapEnabled}}
+    <div class="alert alert-info col-sm-offset-3 col-sm-6" role="status">{{__ "Password is managed by LDAP and cannot be changed here"}}</div>
+  {{else}}
+    <fieldset>
+      <legend class="col-sm-offset-3 col-sm-6">{{__ "Change password"}}</legend>
+      <p id="password_change_help" class="col-sm-offset-3 col-sm-6 help-block">{{__ "Leave password fields blank to keep your current password"}}</p>
+
+      <div class="form-group">
+        <label for="current_password" class="col-sm-3 control-label">{{__ "Current password"}}</label>
+        <div class="col-sm-6"><input id="current_password" class="form-control" type="password" name="current_password" maxlength="200" autocomplete="current-password" aria-describedby="password_change_help"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="new_password" class="col-sm-3 control-label">{{__ "New password"}}</label>
+        <div class="col-sm-6"><input id="new_password" class="form-control" type="password" name="password" maxlength="200" autocomplete="new-password" aria-describedby="password_change_help"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="password_confirm" class="col-sm-3 control-label">{{__ "Confirm password"}}</label>
+        <div class="col-sm-6"><input id="password_confirm" class="form-control" type="password" name="password_confirm" maxlength="200" autocomplete="new-password" aria-describedby="password_change_help"></div>
+      </div>
+    </fieldset>
+  {{/if}}
+
+  <div class="form-group">
+    <div class="col-sm-offset-3 col-sm-6">
+      <button type="submit" class="btn btn-success single-click">{{__ "Save changes"}}</button>
+    </div>
+  </div>
+</form>

@@ -291,5 +291,21 @@
   "Requested Clock-out time": "Requested Clock-out time",
   "No Clock-out correction requests": "No Clock-out correction requests",
   "None": "None",
-  "All": "All"
+  "All": "All",
+  "My profile": "My profile",
+  "Contact an administrator to change your email address": "Contact an administrator to change your email address",
+  "Change password": "Change password",
+  "Leave password fields blank to keep your current password": "Leave password fields blank to keep your current password",
+  "Current password": "Current password",
+  "New password": "New password",
+  "Profile updated": "Profile updated",
+  "Failed to update profile": "Failed to update profile",
+  "The form expired. Please try again.": "The form expired. Please try again.",
+  "First name is required and must not exceed 100 characters": "First name is required and must not exceed 100 characters",
+  "Last name is required and must not exceed 100 characters": "Last name is required and must not exceed 100 characters",
+  "Password is managed by LDAP and cannot be changed here": "Password is managed by LDAP and cannot be changed here",
+  "Current password is incorrect": "Current password is incorrect",
+  "New password is required": "New password is required",
+  "New password must not exceed 200 characters": "New password must not exceed 200 characters",
+  "Confirmed password does not match new password": "Confirmed password does not match new password"
 }

@@ -325,5 +325,21 @@
   "Requested Clock-out time": "เวลาออกงานที่ขอแก้ไข",
   "No Clock-out correction requests": "ยังไม่มีคำขอแก้ไขเวลาออกงาน",
   "None": "ไม่ยกยอด",
-  "All": "ทั้งหมด"
+  "All": "ทั้งหมด",
+  "My profile": "โปรไฟล์ของฉัน",
+  "Contact an administrator to change your email address": "ติดต่อผู้ดูแลระบบหากต้องการเปลี่ยนอีเมล",
+  "Change password": "เปลี่ยนรหัสผ่าน",
+  "Leave password fields blank to keep your current password": "เว้นช่องรหัสผ่านว่างไว้หากไม่ต้องการเปลี่ยนรหัสผ่าน",
+  "Current password": "รหัสผ่านปัจจุบัน",
+  "New password": "รหัสผ่านใหม่",
+  "Profile updated": "บันทึกโปรไฟล์แล้ว",
+  "Failed to update profile": "ไม่สามารถบันทึกโปรไฟล์ได้",
+  "The form expired. Please try again.": "แบบฟอร์มหมดอายุ กรุณาลองอีกครั้ง",
+  "First name is required and must not exceed 100 characters": "กรุณากรอกชื่อไม่เกิน 100 ตัวอักษร",
+  "Last name is required and must not exceed 100 characters": "กรุณากรอกนามสกุลไม่เกิน 100 ตัวอักษร",
+  "Password is managed by LDAP and cannot be changed here": "รหัสผ่านถูกจัดการโดย LDAP และไม่สามารถเปลี่ยนจากหน้านี้ได้",
+  "Current password is incorrect": "รหัสผ่านปัจจุบันไม่ถูกต้อง",
+  "New password is required": "กรุณากรอกรหัสผ่านใหม่",
+  "New password must not exceed 200 characters": "รหัสผ่านใหม่ต้องไม่เกิน 200 ตัวอักษร",
+  "Confirmed password does not match new password": "การยืนยันรหัสผ่านไม่ตรงกับรหัสผ่านใหม่"
 }
