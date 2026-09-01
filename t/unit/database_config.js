@@ -33,17 +33,24 @@ describe('Database configuration', () => {
     assert.strictEqual(config.development.dialect, 'sqlite');
   });
 
-  it('uses PostgreSQL for development and production with DATABASE_URL', () => {
+  it('uses PostgreSQL without TLS for an internal DATABASE_URL', () => {
     const config = loadConfig('postgresql://user:password@example.com:5432/postgres');
     assert.strictEqual(config.development.dialect, 'postgres');
     assert.strictEqual(config.production.dialect, 'postgres');
     assert.strictEqual(config.production.use_env_variable, 'DATABASE_URL');
-    assert.strictEqual(config.production.dialectOptions.ssl.rejectUnauthorized, true);
+    assert.strictEqual(config.production.dialectOptions.ssl, undefined);
+  });
+
+  it('uses TLS for an external DATABASE_URL that requires it', () => {
+    const config = loadConfig('postgresql://user:password@example.com:5432/postgres?sslmode=require');
+    assert.strictEqual(config.production.dialectOptions.ssl.require, true);
+    assert.strictEqual(config.production.dialectOptions.ssl.rejectUnauthorized, false);
   });
 
   it('uses a supplied Supabase CA certificate', () => {
     const certificate = '-----BEGIN CERTIFICATE-----\ntest\n-----END CERTIFICATE-----';
     const config = loadConfig('postgresql://user:password@example.com:5432/postgres', certificate);
     assert.strictEqual(config.production.dialectOptions.ssl.ca, certificate);
+    assert.strictEqual(config.production.dialectOptions.ssl.rejectUnauthorized, true);
   });
 });
