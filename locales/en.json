@@ -284,6 +284,12 @@
   "Actual Clock-in time": "Actual Clock-in time",
   "Requested Clock-in time": "Requested Clock-in time",
   "No Clock-in correction requests": "No Clock-in correction requests",
+  "Clock-out correction requests": "Clock-out correction requests",
+  "Request a Clock-out correction": "Request a Clock-out correction",
+  "Select attendance date": "Select attendance date",
+  "Actual Clock-out time": "Actual Clock-out time",
+  "Requested Clock-out time": "Requested Clock-out time",
+  "No Clock-out correction requests": "No Clock-out correction requests",
   "None": "None",
   "All": "All"
 }

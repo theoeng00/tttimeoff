@@ -1,0 +1,56 @@
+{{> header}}
+
+<h1>{{__ "Clock-out correction requests"}}</h1>
+{{> show_flash_messages}}
+
+{{#if canSubmit}}
+<div class="panel panel-default">
+  <div class="panel-heading"><strong>{{__ "Request a Clock-out correction"}}</strong></div>
+  <div class="panel-body">
+    <form method="post" action="/attendance/clock-out-corrections/" class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="attendance-id">{{__ "Select attendance date"}}</label>
+        <div class="col-sm-7">
+          <select class="form-control" id="attendance-id" name="attendance_id" required>
+            {{#each candidates}}<option value="{{id}}">{{optionLabel}}</option>{{/each}}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="requested-clock-out-time">{{__ "Requested Clock-out time"}}</label>
+        <div class="col-sm-3"><input class="form-control" id="requested-clock-out-time" name="requested_clock_out_time" type="time" required></div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="clock-out-correction-reason">{{__ "Reason"}}</label>
+        <div class="col-sm-7"><textarea class="form-control" id="clock-out-correction-reason" name="reason" maxlength="1000" required></textarea></div>
+      </div>
+      <button class="btn btn-success pull-right single-click" type="submit">{{__ "Submit for approval"}}</button>
+    </form>
+  </div>
+</div>
+{{/if}}
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><tr><th>{{__ "Employee"}}</th><th>{{__ "Date"}}</th><th>{{__ "Actual Clock-out time"}}</th><th>{{__ "Requested Clock-out time"}}</th><th>{{__ "Reason"}}</th><th>{{__ "Status"}}</th><th>{{__ "Approver"}}</th><th>{{__ "Actions"}}</th></tr></thead>
+    <tbody>
+      {{#each requests}}
+      <tr>
+        <td>{{user.name}} {{user.lastname}}</td>
+        <td>{{as_date_formatted work_date "DD/MM/YYYY"}}</td>
+        <td>{{originalClockOutTime}}</td>
+        <td>{{requestedClockOutTime}}</td>
+        <td>{{reason}}</td>
+        <td>{{statusLabel}}</td>
+        <td>{{approver.name}} {{approver.lastname}}</td>
+        <td>{{#if canDecide}}<form method="post" action="/attendance/clock-out-corrections/{{id}}/approve/" class="form-inline" style="display:inline"><button class="btn btn-xs btn-success" type="submit">{{__ "Approve"}}</button></form> <form method="post" action="/attendance/clock-out-corrections/{{id}}/reject/" class="form-inline" style="display:inline"><button class="btn btn-xs btn-danger" type="submit">{{__ "Reject"}}</button></form>{{/if}}</td>
+      </tr>
+      {{else}}
+      <tr><td colspan="8" class="text-center text-muted">{{__ "No Clock-out correction requests"}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<p><a class="btn btn-default" href="/attendance/">{{__ "Back"}}</a></p>
+{{> footer}}

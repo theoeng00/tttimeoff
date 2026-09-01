@@ -318,6 +318,12 @@
   "Actual Clock-in time": "เวลาที่กด Clock-in จริง",
   "Requested Clock-in time": "เวลาเข้างานที่ขอแก้ไข",
   "No Clock-in correction requests": "ยังไม่มีคำขอแก้ไขเวลาเข้างาน",
+  "Clock-out correction requests": "คำขอแก้ไขเวลาออกงาน",
+  "Request a Clock-out correction": "ขอแก้ไขเวลาออกงาน",
+  "Select attendance date": "เลือกวันที่ลงเวลา",
+  "Actual Clock-out time": "เวลาที่กด Clock-out จริง",
+  "Requested Clock-out time": "เวลาออกงานที่ขอแก้ไข",
+  "No Clock-out correction requests": "ยังไม่มีคำขอแก้ไขเวลาออกงาน",
   "None": "ไม่ยกยอด",
   "All": "ทั้งหมด"
 }
