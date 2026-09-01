@@ -279,6 +279,11 @@
   "Enter a value greater than zero to limit how many days each employee can take per year.": "Enter a value greater than zero to limit how many days each employee can take per year.",
   "Company name:": "Company name:",
   "Type the company name to confirm deletion.": "Type the company name to confirm deletion.",
+  "Clock-in correction requests": "Clock-in correction requests",
+  "Request a Clock-in correction": "Request a Clock-in correction",
+  "Actual Clock-in time": "Actual Clock-in time",
+  "Requested Clock-in time": "Requested Clock-in time",
+  "No Clock-in correction requests": "No Clock-in correction requests",
   "None": "None",
   "All": "All"
 }

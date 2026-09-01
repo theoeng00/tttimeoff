@@ -313,6 +313,11 @@
   "Enter a value greater than zero to limit how many days each employee can take per year.": "กรอกค่ามากกว่าศูนย์เพื่อจำกัดจำนวนวันที่พนักงานแต่ละคนลาได้ต่อปี",
   "Company name:": "ชื่อบริษัท:",
   "Type the company name to confirm deletion.": "พิมพ์ชื่อบริษัทเพื่อยืนยันการลบ",
+  "Clock-in correction requests": "คำขอแก้ไขเวลาเข้างาน",
+  "Request a Clock-in correction": "ขอแก้ไขเวลาเข้างาน",
+  "Actual Clock-in time": "เวลาที่กด Clock-in จริง",
+  "Requested Clock-in time": "เวลาเข้างานที่ขอแก้ไข",
+  "No Clock-in correction requests": "ยังไม่มีคำขอแก้ไขเวลาเข้างาน",
   "None": "ไม่ยกยอด",
   "All": "ทั้งหมด"
 }
